@@ -87,7 +87,7 @@ router.post('/signup', jsonParser, (req,res)=>{
     lastName = lastName.trim();
 
     return User.find({username})
-        .count()
+        .countDocuments()
         .then(count => {
             if(count > 0) {
                 return Promise.reject({
@@ -142,7 +142,7 @@ router.post('/changeAccountDetails', (req,res)=>{
         })
         .then(updatedUser => {
             updatedUser.save();
-            return res.send({code: 201})
+            return res.send({code: 201, user: updatedUser});
         })
         .catch(err => {
             console.error(err);
