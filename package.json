@@ -4,7 +4,7 @@
   "description": "the api for Grab Dat Cat 2.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --timeout 5000 --exit"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -23,9 +24,9 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
-    "faker": "^4.1.0",
-    "mocha": "^6.2.1"
+    "chai": "^4.0.1",
+    "chai-http": "^3.0.0",
+    "faker": "^3.1.0",
+    "mocha": "^4.0.1"
   }
 }
