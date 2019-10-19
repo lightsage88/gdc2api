@@ -154,13 +154,14 @@ router.post('/changePassword', (req,res) => {
     console.log(req.body);
     let user;
     let newHash;
+   
     const hashIt = (pwString) => {
         console.log(pwString);
         return bcrypt.hash(pwString, 10);
     }
-    const compare = (pwString, hash) => {
-        return bcrypt.compare(pwString, hash)
-    }
+  
+
+    
     let newPW = req.body.newPW;
     let result;
     if(newPW.trim() !== newPW) {
@@ -173,11 +174,28 @@ router.post('/changePassword', (req,res) => {
 
     return User.findOne({username: req.body.username})
     .then(_user => {
-        user = _user;
+        user = _user
+        
+
         return user.password;
     })
-    .then(hash => {
-        result = compare(req.body.oldPW, hash);
+    .then(async hash => {
+
+
+
+        // if(hash !== hashIt(newPW)) {
+        //     console.log('cobalt');
+        //     return res.send({
+        //         code: 422,
+        //         reason: 'AuthenticationError',
+        //         message: "Game recognize game, and right now you looking pretty unfamiliar"
+        //     });
+        // }
+
+
+        result = await bcrypt.compare(req.body.oldPW, hash);
+        console.log('bagatella');
+        console.log(result);
         if(!result) {
             return res.send({
                 code: 422,
@@ -188,8 +206,7 @@ router.post('/changePassword', (req,res) => {
             console.log('yippee');
             newHash = hashIt(newPW);
             
-            return newHash;
-            
+            return newHash;           
         }
         return newHash
     })

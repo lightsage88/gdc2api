@@ -243,4 +243,90 @@ describe('/api/user', ()=> {
         });
     })
 
+    /////////////////////////////
+
+    describe('api/users/changePassword', function() {
+        beforeEach(()=>{
+            return chai.request(app)
+            .post('/api/users/signup')
+            .send({
+                firstName,
+                lastName,
+                username,
+                password,
+                birthday,
+            })
+            .then(res => {
+                console.log('a ok');
+            })
+            .catch(err => console.error(err));
+
+        });
+
+        afterEach(()=> {
+            return User.deleteOne({})
+        })
+        
+       
+        describe('POST', ()=>{
+            it('should not work if there are white spaces before or after the password ', () => {
+                return chai.request(app)
+                    .post('/api/users/changePassword')
+                    .send({
+                        username,
+                        newPW: "seargeantCandy     ",
+                        oldPW: password
+                    })
+                    .then(res => {
+                        console.log(res.body);
+                        expect(res.body.code).to.equal(422);
+                        expect(res.body.reason).to.equal('ValidationError');
+                        expect(res.body.message).to.equal('Cannot start or end with a whitespace');
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
+                
+            })
+
+            it('should not work if you supply the incorrect original password', () => {
+                return chai.request(app)
+                .post('/api/users/changePassword')
+                .send({
+                    username,
+                    newPW: "seargentCandy",
+                    oldPW: 'wrongPassword'
+
+                })
+                .then(res => {
+                    console.log(res.body);
+                    expect(res.body.code).to.equal(422);
+                    expect(res.body.reason).to.equal('AuthenticationError');
+                    expect(res.body.message).to.equal('Game recognize game, and right now you looking pretty unfamiliar');
+
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            });
+
+            it('will work if you pass in a proper new password, with the correct old password', () => {
+                return chai.request(app)
+                .post('/api/users/changePassword')
+                .send({
+                    username,
+                    oldPW: password,
+                    newPW: "seargeantCandy"
+                })
+                .then(res=>{
+                    console.log(res.body);
+                    expect(res.body.code).to.equal(201);
+                })
+            })
+
+         
+        
+        });
+    })
+
 })
