@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET, JWT_EXPIRY} = require("../config");
-const {User} = require('../models');
+const {User, Cat} = require('../models');
 
 const router = express.Router();
 
@@ -82,7 +82,7 @@ router.post('/signup', jsonParser, (req,res)=>{
         });
     }
 
-    let {username, password, firstName='', lastName=''} = req.body;
+    let {username, password, firstName='', lastName='', cats} = req.body;
     firstName = firstName.trim();
     lastName = lastName.trim();
 
@@ -104,7 +104,8 @@ router.post('/signup', jsonParser, (req,res)=>{
                 username,
                 password: hash,
                 firstName,
-                lastName
+                lastName,
+                cats
             });
         })
         .then(user => {
@@ -121,11 +122,7 @@ router.post('/signup', jsonParser, (req,res)=>{
 
 router.post('/changeAccountDetails', (req,res)=>{
     let updatedUser;
-    console.log('asfsdf');
     let {firstName, lastName, birthday, username} = req.body;
-    console.log(firstName, lastName, birthday, username);
-    console.log(typeof(birthday));
-    console.log(birthday === '');
     
     return User.findOne({username: username})
         .then(_user => {
@@ -134,9 +131,6 @@ router.post('/changeAccountDetails', (req,res)=>{
             lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
             birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
             
-            // updatedUser.save();
-            console.log(updatedUser);
-            // res.send(updatedUser);
             return updatedUser
 
         })
@@ -151,12 +145,11 @@ router.post('/changeAccountDetails', (req,res)=>{
 
 //Need to include changing acccount details as well.
 router.post('/changePassword', (req,res) => {
-    console.log(req.body);
+
     let user;
     let newHash;
    
     const hashIt = (pwString) => {
-        console.log(pwString);
         return bcrypt.hash(pwString, 10);
     }
   
@@ -180,22 +173,7 @@ router.post('/changePassword', (req,res) => {
         return user.password;
     })
     .then(async hash => {
-
-
-
-        // if(hash !== hashIt(newPW)) {
-        //     console.log('cobalt');
-        //     return res.send({
-        //         code: 422,
-        //         reason: 'AuthenticationError',
-        //         message: "Game recognize game, and right now you looking pretty unfamiliar"
-        //     });
-        // }
-
-
         result = await bcrypt.compare(req.body.oldPW, hash);
-        console.log('bagatella');
-        console.log(result);
         if(!result) {
             return res.send({
                 code: 422,
@@ -203,7 +181,6 @@ router.post('/changePassword', (req,res) => {
                 message: "Game recognize game, and right now you looking pretty unfamiliar"
             });
         } else {
-            console.log('yippee');
             newHash = hashIt(newPW);
             
             return newHash;           
@@ -220,6 +197,57 @@ router.post('/changePassword', (req,res) => {
     .catch(err => {
         console.error(err);
     })
+
+});
+
+router.post('/addCat', (req,res) => {
+    let {age, breed, coat, color, description, id, image, location, name, size, status, username } = req.body;
+    let user;
+    return User.find({username})
+    .then(_user => {
+        user = _user[0];
+        return Cat.create({
+            age,
+            breed,
+            coat,
+            color,
+            description,
+            id, 
+            image, 
+            location, 
+            name, 
+            size, 
+            status
+        });
+
+
+    })
+    .then(newCat => {
+        user.cats.push(newCat);
+        user.save();
+        return res.status(201).json({message: "Cat added to kennel!", cat: newCat});
+    })
+    .catch(err => console.error(err));
+
+});
+
+router.post('/removeCat', (req,res) => {
+    let user;
+    let {catID, username} = req.body;
+    return User.find({username})
+    .then(_user => {
+        user = _user[0]
+        return user;
+    })
+    .then(user => {
+        let newCatArray = user.cats.filter(object=>{
+           return object.id !== catID
+        })
+        user.cats = newCatArray;
+        return res.send(user);
+    })
+    .catch(err => console.error(err));
+
 
 })
 

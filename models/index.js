@@ -8,33 +8,41 @@ mongoose.Promise = global.Promise;
 
 
 const catSchema = mongoose.Schema({
-    status:{
+
+    age: {
+        type: String
+    },
+    breed: {
+        type: String
+    },
+    coat: {
+        type: String
+    },
+    color: {
         type: String
     },
     description: {
         type:String
     },
-    thumbnail: {
-        type: Object
-        //img file??
+    id: {
+        type: Number
+    },
+    image: { data: Buffer, contentType: String},
+    location: {
+        type: String
     },
     name: {
         type: String,
         required: true
     },
-    id: {
-        type: Number
-    },
-    image: { data: Buffer, contentType: String},
-    breed: {
+    status:{
         type: String
     },
-    age: {
-        type: String
-    },
-    location: {
-        type: String
+    thumbnail: {
+        type: Object
+        //img file??
     }
+
 });
 
 const userSchema = mongoose.Schema({
