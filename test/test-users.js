@@ -468,6 +468,27 @@ describe('/api/user', ()=> {
                 .catch(err => console.error(err))
             });
         })
+    });
+
+    describe('api/users/deleteAccount', ()=>{
+        describe('POST', () =>{
+
+            return chai.request(app)
+            .post('/api/users/deleteAccount')
+            .send({
+                username,
+                clientPasswordInput: password
+            })
+            .then(res => {
+                console.log('delete account test');
+                console.log(res.body);
+            })
+            .catch(err => console.error(err));
+
+        })
+
+
     })
+
 
 })

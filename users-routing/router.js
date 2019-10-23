@@ -12,7 +12,7 @@ const jsonParser = bodyParser.json();
 
 router.use(express.json());
 
-
+///Account Creation, Editing, and Deletion//////////////////////
 
 router.post('/signup', jsonParser, (req,res)=>{
     const requiredFields = ['username', 'password'];
@@ -199,6 +199,44 @@ router.post('/changePassword', (req,res) => {
     })
 
 });
+
+/////////Deleting Account////////////
+router.post('/deleteAccount', (req,res) => {
+    let {username, clientPasswordInput} = req.body;
+
+    return User.findOne({username})
+    .then(_user => {
+        user = _user
+        
+
+        return user.password;
+    })
+    .then(async hash => {
+        result = await bcrypt.compare(clientPasswordInput, hash);
+        if(!result) {
+            return res.send({
+                code: 422,
+                reason: 'AuthenticationError',
+                message: "Game recognize game, and right now you looking pretty unfamiliar"
+            });
+        } else {
+            return User.deleteOne({username})
+            .then(response => {
+                console.log(response.body);
+                return res.status(202).json({message: "Account Deleted"});
+            })
+            .catch(err => console.error(err));          
+        }
+    })
+    .catch(err => {
+        console.error(err);
+    })
+
+
+})
+
+
+/////////////////Adding/Removing Cats///////////////////////
 
 router.post('/addCat', (req,res) => {
     let {age, breed, coat, color, description, id, image, location, name, size, status, username } = req.body;

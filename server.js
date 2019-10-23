@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const {router: usersRouter} = require('./users-routing');
 const {router: catRouter} = require('./cats-routing');
+const {router: authRouter, localStrategy, jwtStrategy} = require('./auth-routing');
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
@@ -17,10 +18,12 @@ app.use(express.json());
 app.use(cors());
 
 app.use(express.static('public'));
-
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 app.use(morgan('common'));
 
 // app.use(multer({dest:'./uploads/'}).single('photo'));
+app.use('/api/auth/', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/cats', catRouter);
 const logErrors = (err, req, res, next) => {
