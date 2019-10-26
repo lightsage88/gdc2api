@@ -53,7 +53,7 @@ refreshPetFinderToken();
 
 setInterval(()=>{
     token = refreshPetFinderToken();
-}, 3500000);
+}, 39000);
 
 router.use(express.json());
 
@@ -78,12 +78,15 @@ router.use(express.json());
 
 router.post('/seekCats', (req,res) => {
     console.log('hamburger');
+    console.log(req.body);
     console.log(token);
+    let {breed, coat, color, gender, age} = req.body;
+    console.log(breed, coat,color);
     //   let petFinderToken =  refreshPetFinderToken();
     //"https://api.petfinder.com/v2/animals?type=cat";
     
     axios({
-        url: `${PETFINDER_API_URL}/animals?type=cat`,
+        url: `${PETFINDER_API_URL}/animals?type=cat&breed=${breed}&coat=${coat}&color=${color}&gender=${gender}&age=${age}`,
         method: "GET",
         headers: {
             "Authorization" : `Bearer ${token}`,
@@ -93,7 +96,7 @@ router.post('/seekCats', (req,res) => {
     .then(response => {
         console.log('wolbocho');
         console.log(response.data);
-        res.send(response.data);
+        res.send(response.data.animals);
     })
     .catch(err => {
         console.error(err);

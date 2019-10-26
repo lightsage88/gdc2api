@@ -33,13 +33,34 @@ const jwtAuth = passport.authenticate('jwt', {session:false});
 
 //Human exchanges a valid JWT for a new one with a later expiry date
 
-router.post('/refreshToken', jwtAuth, (req,res)=>{
+router.post('/refreshToken', (req,res)=>{
     console.log('refreshToken running');
-    console.log(req);
+    console.log(req.body);
+    
     //I can only surmise that we do not call req.user.serialize() because that version of 'user' had already been created
     //the first go around with /login
-    const authToken = createAuthToken(req.user);
+    jwt.verify(req.body.token, JWT_SECRET, (err, decoded) => {
+        if(!err && decoded) {
+            console.log('all good');
+
+    const authToken = createAuthToken(req.body.username);
     res.json({authToken})
+        } else {
+            return res.status(401);
+        }
+        
+    })
+
+
+})
+
+router.post('/jwtDecode', (req,res) => {
+    console.log('running jwtDecode');
+    console.log(req.body);
+    jwt.verify(req.body.authToken, JWT_SECRET, (err, decoded) => {
+        console.log(decoded);
+            res.json(decoded);
+    })
 })
 
 

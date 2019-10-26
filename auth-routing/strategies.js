@@ -44,11 +44,15 @@ const jwtStrategy = new JwtStrategy(
     {
     secretOrKey: JWT_SECRET,
         //Get the jwt by extracting it from the header, using the scheme "Bearer"
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+        // jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         //Only allow HS256 encrypted tokens, the same type we use
     algorithms: ['HS256']
+
     },
     (payload, done) => {
+        console.log('jwt strategy result');
+        console.log(payload);
         done(null, payload.user);
     }
 );

@@ -239,7 +239,10 @@ router.post('/deleteAccount', (req,res) => {
 /////////////////Adding/Removing Cats///////////////////////
 
 router.post('/addCat', (req,res) => {
-    let {age, breed, coat, color, description, id, image, location, name, size, status, username } = req.body;
+    console.log('addcat running');
+    console.log(req.body.cat);
+    let {age, breed, coat, color, description, id, image, location, name, size, status} = req.body.cat;
+    let username = req.body.username;
     let user;
     return User.find({username})
     .then(_user => {
@@ -263,6 +266,8 @@ router.post('/addCat', (req,res) => {
     .then(newCat => {
         user.cats.push(newCat);
         user.save();
+        console.log('behold the user');
+        console.log(user);
         return res.status(201).json({message: "Cat added to kennel!", cat: newCat});
     })
     .catch(err => console.error(err));
@@ -288,6 +293,28 @@ router.post('/removeCat', (req,res) => {
 
 
 })
+
+router.post('/refreshStateWithToken', (req,res) => {
+    console.log('refreshStateWithToken running');
+    console.log(req.body);
+    let token = req.body.token;
+    let userVar;
+    var decodedToken = jwt.verify(token, JWT_SECRET, (err, decoded) =>{
+        
+        return decoded.user;
+    } );
+
+    console.log(decodedToken);
+
+    User.findOne({"username": decodedToken})
+    .then(user => {
+        userVar = user.serialize();
+        res.status(201).send(userVar);
+    })
+    .catch(err => {
+        console.error(err);
+    });
+});
 
 
 
