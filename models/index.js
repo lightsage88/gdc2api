@@ -12,22 +12,25 @@ const catSchema = mongoose.Schema({
     age: {
         type: String
     },
-    breed: {
-        type: String
+    breeds: {
+        type: Object
     },
     coat: {
         type: String
     },
-    color: {
-        type: String
+    colors: {
+        type: Object
     },
     description: {
         type:String
     },
+    gender: {
+        type: String
+    },
     id: {
         type: Number
     },
-    image: { data: Buffer, contentType: String},
+   
     location: {
         type: String
     },
@@ -35,12 +38,11 @@ const catSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    photos: {
+        type: Array
+    },
     status:{
         type: String
-    },
-    thumbnail: {
-        type: Object
-        //img file??
     }
 
 });

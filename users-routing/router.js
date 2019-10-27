@@ -121,31 +121,74 @@ router.post('/signup', jsonParser, (req,res)=>{
 
 
 router.post('/changeAccountDetails', (req,res)=>{
+    console.log(req.body);  
     let updatedUser;
-    let {firstName, lastName, birthday, username} = req.body;
-    
-    return User.findOne({username: username})
-        .then(_user => {
-            updatedUser = _user;
-            firstName !== "" && firstName !==updatedUser.firstName ? updatedUser.firstName = firstName : '';
-            lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
-            birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
-            
-            return updatedUser
+    let {firstName, lastName, birthday, username, password, confirm} = req.body;
+    if(password !== confirm) {
+        console.log('nd')
+        return res.send({code:401});
+    } 
 
+
+    //need to check to see if password is the same as what we have in the account
+    
+    
+
+
+
+        return User.findOne({username: username})
+        .then(_user => {
+            updatedUser = _user
+            return updatedUser.password
         })
-        .then(updatedUser => {
-            updatedUser.save();
-            return res.send({code: 201, user: updatedUser});
-        })
+        .then(async hash => {
+            result = await bcrypt.compare(password, hash);
+            if(!result) {
+                console.log('oh noes');
+                return res.send({
+                    code: 422,
+                    reason: 'AuthenticationError',
+                    message: "Game recognize game, and right now you looking pretty unfamiliar"
+                });
+            } else {
+                    firstName !== "" && firstName !==updatedUser.firstName ? updatedUser.firstName = firstName : '';
+                    lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
+                    birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
+                    
+        
+                
+                    console.log(updatedUser);
+                    updatedUser.save();
+                    return res.send({code: 201, user: updatedUser});
+            }
+           })
+          
+        
+        // .then( () => {
+        //     updatedUser;
+        //     firstName !== "" && firstName !==updatedUser.firstName ? updatedUser.firstName = firstName : '';
+        //     lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
+        //     birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
+            
+        //     return updatedUser
+
+        // })
+        // .then(user => {
+        //     console.log('bodyblows');
+        //     console.log(updatedUser);
+        //     user.save();
+        //     return res.send({code: 201, user: updatedUser});
+        // })
         .catch(err => {
             console.error(err);
         });
+    
 });
 
 //Need to include changing acccount details as well.
 router.post('/changePassword', (req,res) => {
-
+    console.log('changePassword running');
+    console.log(req.body);
     let user;
     let newHash;
    
@@ -175,25 +218,31 @@ router.post('/changePassword', (req,res) => {
     .then(async hash => {
         result = await bcrypt.compare(req.body.oldPW, hash);
         if(!result) {
+            console.log('zelda fn');
             return res.send({
                 code: 422,
                 reason: 'AuthenticationError',
                 message: "Game recognize game, and right now you looking pretty unfamiliar"
             });
-        } else {
-            newHash = hashIt(newPW);
             
-            return newHash;           
+        } else {
+            console.log('we got the else block');
+            newHash = hashIt(newPW);
+            user.password = newHash;
+            user.save();
+            return res.send({
+                code:201
+            });
         }
-        return newHash
+        
     })
-    .then(newHash => {
-        user.password = newHash;
-        user.save();
-        return res.send({
-            code:201
-        });
-    })
+    // .then(newHash => {
+    //     // user.password = newHash;
+    //     // user.save();
+    //     // return res.send({
+    //     //     code:201
+    //     // });
+    // })
     .catch(err => {
         console.error(err);
     })
@@ -241,7 +290,7 @@ router.post('/deleteAccount', (req,res) => {
 router.post('/addCat', (req,res) => {
     console.log('addcat running');
     console.log(req.body.cat);
-    let {age, breed, coat, color, description, id, image, location, name, size, status} = req.body.cat;
+    let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = req.body.cat;
     let username = req.body.username;
     let user;
     return User.find({username})
@@ -249,14 +298,15 @@ router.post('/addCat', (req,res) => {
         user = _user[0];
         return Cat.create({
             age,
-            breed,
+            breeds,
             coat,
-            color,
+            colors,
             description,
-            id, 
-            image, 
+            gender,
+            id,
             location, 
-            name, 
+            name,
+            photos, 
             size, 
             status
         });
@@ -286,7 +336,13 @@ router.post('/removeCat', (req,res) => {
         let newCatArray = user.cats.filter(object=>{
            return object.id !== catID
         })
+        console.log('pizzatime');
+        console.log(user.cats);
+        console.log(newCatArray);
         user.cats = newCatArray;
+        user.save();
+        
+        
         return res.send(user);
     })
     .catch(err => console.error(err));
