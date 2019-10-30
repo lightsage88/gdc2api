@@ -14,7 +14,7 @@ router.use(express.json());
 
 //TODO: DLETE This path
 router.get("/rollcall", (req, res)=>{
-    return User.find
+    return User.find()
     .then(response => {
         return res.send(response);
     })
