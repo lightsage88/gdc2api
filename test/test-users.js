@@ -179,6 +179,7 @@ describe('/api/user', ()=> {
             .post('/api/users/changeAccountDetails')
             .send({
                 username,
+                password,
                 firstName: "Samus",
                 lastName
             })
@@ -200,6 +201,7 @@ describe('/api/user', ()=> {
                 .post('/api/users/changeAccountDetails')
                 .send({
                     username,
+                    password,
                     firstName,
                     lastName: "Aran"
                 })
@@ -211,7 +213,7 @@ describe('/api/user', ()=> {
                     expect(res.body.code).to.equal(201);
                     expect(res.body.user.lastName).to.equal('Aran');
                     
-    
+                    
                 })
                 .catch(err => console.error(err));  
             });
@@ -223,6 +225,7 @@ describe('/api/user', ()=> {
                 .post('/api/users/changeAccountDetails')
                 .send({
                     username,
+                    password,
                     firstName,
                     lastName,
                     birthday: newBirthday
