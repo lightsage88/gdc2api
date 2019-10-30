@@ -12,6 +12,17 @@ const jsonParser = bodyParser.json();
 
 router.use(express.json());
 
+//TODO: DLETE This path
+router.get("/rollcall", (req, res)=>{
+    return User.find
+    .then(response => {
+        return res.send(response);
+    })
+    .catch(err => console.error(err));
+})
+
+
+
 ///Account Creation, Editing, and Deletion//////////////////////
 
 router.post('/signup', jsonParser, (req,res)=>{
