@@ -25,7 +25,220 @@ router.get("/rollcall", (req, res)=>{
 
 ///Account Creation, Editing, and Deletion//////////////////////
 
-router.post('/signup', jsonParser, (req,res)=>{
+
+const zodiacFinder = (dateArray) => {
+  console.log('zodiacFinder running');
+  switch(dateArray[0]) {
+    case 1:
+      if(dateArray[1] >= 1 && dateArray[1] <= 20) {
+        console.log('CAPRICORN');
+        return {
+          "zodiacSign":"CAPRICORN",
+          "catType":"Tabby"
+        };
+      } else if(dateArray[1] >= 21 && dateArray[1] <= 31) {
+        console.log('AQUARIUS');
+        return {
+          "zodiacSign":"AQUARIUS",
+          "catType":"Manx"
+        };
+      }
+    break;
+    case 2:
+    if(dateArray[1] >= 1 && dateArray[1] <= 18) {
+      console.log('AQUARIUS');
+      return {
+        "zodiacSign":"AQUARIUS",
+        "catType":"Manx"
+      };
+    } else if(dateArray[1] >= 19 && dateArray[1] <= 29) {
+      console.log('PISCES');
+      return {
+        "zodiacSign":"PISCES",
+        "catType":"Exotic Shorthair"
+      };
+    }
+    break;
+
+    case 3:
+    if(dateArray[1] >= 1 && dateArray[1] <= 20) {
+      console.log("PISCES");
+      return {
+        "zodiacSign":"PISCES",
+        "catType":"Exotic Shorthair"
+      };
+    } else if (dateArray[1] >= 21 && dateArray[1] <= 31) {
+      console.log('ARIES')
+      return {
+        "zodiacSign":"ARIES",
+        "catType":"Maine Coon"
+      };
+    }
+    break;
+
+    case 4:
+    if(dateArray[1] >= 1 && dateArray[1] <= 19) {
+      console.log("ARIES")
+      return {
+        "zodiacSign":"ARIES",
+        "catType":"Maine Coon"
+      };
+    } else if(dateArray[1] >= 20 && dateArray[1] <= 30) {
+      console.log('TAURUS');
+      return {
+        "zodiacSign":"TAURUS",
+        "catType":"Persian"
+      };
+    }
+    break;
+
+    case 5:
+    if(dateArray[1] >= 1 && dateArray[1] <= 20 ) {
+      console.log("TARUS");
+      return {
+        "zodiacSign":"TAURUS",
+        "catType":"Persian"
+      };
+    } else if(dateArray[1] >= 21 && dateArray[1] <= 31 ) {
+      console.log('GEMINI')
+      return {
+          "zodiacSign":"GEMINI",
+          "catType":"Calico"
+      };
+    }
+    break;
+
+    case 6:
+    if(dateArray[1] >= 1 && dateArray[1] <= 20 ) {
+      console.log("GEMINI")
+      return {
+          "zodiacSign":"GEMINI",
+          "catType":"Calico"
+      };
+    } else if(dateArray[1] >= 21 && dateArray[1] <= 30 ) {
+      console.log("CANCER");
+      return {
+        "zodiacSign":"CANCER",
+        "catType":"Ragdoll"
+      };
+    }
+    break;
+
+    case 7:
+    if(dateArray[1] >= 1 && dateArray[1] <= 22){
+      console.log("CANCER");
+      return {
+        "zodiacSign":"CANCER",
+        "catType":"Ragdoll"
+      };
+    } else if(dateArray[1] >= 23 && dateArray[1] <= 31) {
+      console.log("LEO")
+      return {
+        "zodiacSign":"LEO",
+        "catType":"Siamese"
+      };
+    }
+    break;
+
+    case 8:
+    if(dateArray[1] >= 1 && dateArray[1] <= 22) {
+      console.log("LEO");
+      return {
+        "zodiacSign":"LEO",
+        "catType":"Siamese"
+      };
+    } else if(dateArray[1] >= 23 && dateArray[1] <= 31) {
+      console.log("VIRGO");
+      return {
+        "zodiacSign":"VIRGO",
+        "catType":"American Shorthair"
+      };
+    }
+    break;
+
+    case 9:
+    if(dateArray[1] >= 1 && dateArray[1] <= 22) {
+      console.log("VIRGO");
+      return {
+        "zodiacSign":"VIRGO",
+        "catType":"American Shorthair"
+      };
+    } else if(dateArray[1] >= 23 && dateArray[1] <= 30) {
+      console.log('LIBRA');
+      return {
+        "zodiacSign":"LIBRA",
+        "catType":"Tuxedo"
+      };
+    }
+    break;
+
+    case 10:
+    if(dateArray[1] >= 1 && dateArray[1] <= 22 ){
+      console.log("LIBRA");
+      return {
+        "zodiacSign":"LIBRA",
+        "catType":"Tuxedo"
+      };
+    } else if(dateArray[1] >= 23 && dateArray[1] <= 31) {
+      console.log("SCORPIO");
+      return {
+        "zodiacSign":"SCORPIO",
+        "catType":"Sphynx / Hairless Cat"
+      };
+    }
+
+    case 11:
+    if(dateArray[1] >= 1 && dateArray[1] <= 21 ) {
+      console.log("SCORPIO");
+      return {
+        "zodiacSign":"SCORPIO",
+        "catType":"Sphynx / Hairless Cat"
+      };
+    } else if(dateArray[1] >= 22 && dateArray[1] <= 30 ) {
+      console.log("SAGITTARIUS");
+      return {
+        "zodiacSign":"SAGITTARIUS",
+        "catType":"Bengal"
+      };
+    }
+    break;
+
+    case 12:
+    if(dateArray[1] >= 1 && dateArray[1] <= 21) {
+      console.log("SAGITTARIUS");
+      return  {
+        "zodiacSign":"SAGITTARIUS",
+        "catType":"Bengal"
+      };
+    } else if(dateArray[1] >=22 && dateArray[1] <= 31) {
+      console.log("CAPRICORN");
+      return  {
+        "zodiacSign":"CAPRICORN",
+        "catType":"Tabby"
+      };
+    }
+
+    default:
+      console.log('yappp');
+    break;
+  }
+}
+
+
+router.post('/signup', jsonParser, async (req,res)=>{
+
+///Going to deal with Birthday stuff!
+console.log('hoothoot');
+console.log(req.body);
+
+let zodiacCombo = await zodiacFinder([req.body.birthday.month, req.body.birthday.day]);
+
+// console.log(zodiacCombo);
+
+
+
+
+
     const requiredFields = ['username', 'password'];
     const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -51,6 +264,8 @@ router.post('/signup', jsonParser, (req,res)=>{
             location: nonStringField
         });
     }
+
+
 
     //Now we explicitly reject non trimmed values for username or password
     const explicitlyTrimmedFields = ["username", "password"];
@@ -97,6 +312,8 @@ router.post('/signup', jsonParser, (req,res)=>{
     firstName = firstName.trim();
     lastName = lastName.trim();
 
+
+
     return User.find({username})
         .countDocuments()
         .then(count => {
@@ -116,10 +333,17 @@ router.post('/signup', jsonParser, (req,res)=>{
                 password: hash,
                 firstName,
                 lastName,
-                cats
+                cats,
+                birthday: {
+                  "month": req.body.birthday.month,
+                  "day": req.body.birthday.day
+                },
+                zodiacCombo
             });
         })
         .then(user => {
+          console.log('run run');
+          console.log(user);
             return res.status(201).json(user.serialize());
         })
         .catch(err => {
@@ -131,19 +355,21 @@ router.post('/signup', jsonParser, (req,res)=>{
 });
 
 
-router.post('/changeAccountDetails', (req,res)=>{
-    console.log(req.body);  
+router.post('/changeAccountDetails', async (req,res)=>{
+  console.log('changeAccountDteails running');
+    console.log(req.body);
     let updatedUser;
-    let {firstName, lastName, birthday, username, password, confirm} = req.body;
+    let  {firstName, lastName, birthday, username, password, confirm, zodiacCombo } = req.body;
+    let newZodiacCombo = await zodiacFinder([req.body.birthday.month, req.body.birthday.day]);
     if(password !== confirm) {
         console.log('nd')
         return res.send({code:401});
-    } 
+    }
 
 
     //need to check to see if password is the same as what we have in the account
-    
-    
+
+
 
 
 
@@ -165,22 +391,23 @@ router.post('/changeAccountDetails', (req,res)=>{
                     firstName !== "" && firstName !==updatedUser.firstName ? updatedUser.firstName = firstName : '';
                     lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
                     birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
-                    
-        
-                
+                    newZodiacCombo ? updatedUser.zodiacCombo = newZodiacCombo : updatedUser.zodiacCombo = zodiacCombo;
+
+
+
                     console.log(updatedUser);
                     updatedUser.save();
                     return res.send({code: 201, user: updatedUser});
             }
            })
-          
-        
+
+
         // .then( () => {
         //     updatedUser;
         //     firstName !== "" && firstName !==updatedUser.firstName ? updatedUser.firstName = firstName : '';
         //     lastName !== "" && lastName !== updatedUser.lastName ? updatedUser.lastName = lastName : '';
         //     birthday !== "" && birthday !== updatedUser.birthday ? updatedUser.birthday = birthday : '';
-            
+
         //     return updatedUser
 
         // })
@@ -193,7 +420,7 @@ router.post('/changeAccountDetails', (req,res)=>{
         .catch(err => {
             console.error(err);
         });
-    
+
 });
 
 //Need to include changing acccount details as well.
@@ -202,13 +429,13 @@ router.post('/changePassword', (req,res) => {
     console.log(req.body);
     let user;
     let newHash;
-   
+
     const hashIt = (pwString) => {
         return bcrypt.hash(pwString, 10);
     }
-  
 
-    
+
+
     let newPW = req.body.newPW;
     let result;
     if(newPW.trim() !== newPW) {
@@ -222,7 +449,7 @@ router.post('/changePassword', (req,res) => {
     return User.findOne({username: req.body.username})
     .then(_user => {
         user = _user
-        
+
 
         return user.password;
     })
@@ -235,7 +462,7 @@ router.post('/changePassword', (req,res) => {
                 reason: 'AuthenticationError',
                 message: "Game recognize game, and right now you looking pretty unfamiliar"
             });
-            
+
         } else {
             console.log('we got the else block');
             newHash = hashIt(newPW);
@@ -245,7 +472,7 @@ router.post('/changePassword', (req,res) => {
                 code:201
             });
         }
-        
+
     })
     // .then(newHash => {
     //     // user.password = newHash;
@@ -267,7 +494,7 @@ router.post('/deleteAccount', (req,res) => {
     return User.findOne({username})
     .then(_user => {
         user = _user
-        
+
 
         return user.password;
     })
@@ -285,7 +512,7 @@ router.post('/deleteAccount', (req,res) => {
                 console.log(response.body);
                 return res.status(202).json({message: "Account Deleted"});
             })
-            .catch(err => console.error(err));          
+            .catch(err => console.error(err));
         }
     })
     .catch(err => {
@@ -315,10 +542,10 @@ router.post('/addCat', (req,res) => {
             description,
             gender,
             id,
-            location, 
+            location,
             name,
-            photos, 
-            size, 
+            photos,
+            size,
             status
         });
 
@@ -352,8 +579,8 @@ router.post('/removeCat', (req,res) => {
         console.log(newCatArray);
         user.cats = newCatArray;
         user.save();
-        
-        
+
+
         return res.send(user);
     })
     .catch(err => console.error(err));
@@ -367,7 +594,7 @@ router.post('/refreshStateWithToken', (req,res) => {
     let token = req.body.token;
     let userVar;
     var decodedToken = jwt.verify(token, JWT_SECRET, (err, decoded) =>{
-        
+
         return decoded.user;
     } );
 

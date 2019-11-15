@@ -30,7 +30,7 @@ const catSchema = mongoose.Schema({
     id: {
         type: Number
     },
-   
+
     location: {
         type: String
     },
@@ -54,7 +54,7 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     password: {
-        type:String, 
+        type:String,
         required: true
     },
     authToken: {
@@ -64,18 +64,21 @@ const userSchema = mongoose.Schema({
         type: Boolean
     },
     firstName: {
-        type: String, 
+        type: String,
         required: true,
         default: ''
     },
     lastName: {
-        type: String, 
+        type: String,
         required: true,
         default: ''
     },
     birthday: {
-        type: Date,
+        type: Object,
         required: false
+    },
+    zodiacCombo:{
+      type: Object
     },
     cats: [catSchema]
 
@@ -88,7 +91,9 @@ userSchema.methods.serialize = function() {
         firstName: this.firstName || '',
         lastName: this.lastName || '',
         birthday: this.birthday || '',
-        cats: this.cats || []
+        cats: this.cats || [],
+        zodiacCombo: this.zodiacCombo || {},
+        authToken: this.authToken || ''
     };
 };
 
@@ -113,7 +118,7 @@ userSchema.virtual("mostRecentCharacter").get(function(){
         this.characterChoices.sort((a,b)=>{
             return b.date - a.date;
         })[0] || {};
-    
+
     return characterObject;
 });
 
@@ -136,4 +141,3 @@ userSchema.virtual("mostRecentCharacter").get(function(){
 const User = mongoose.model("User", userSchema);
 const Cat = mongoose.model("Cat", catSchema);
 module.exports = { User, Cat};
-
