@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET, JWT_EXPIRY} = require('../config');
 
- 
+
 const {app, runServer, closeServer} = require('../server');
 const {User, Cat} = require('../models');
 
@@ -170,91 +170,91 @@ describe('/api/user', ()=> {
         afterEach(()=> {
             return User.deleteOne({})
         })
-        
-       
-        describe('POST', ()=>{
-            it('should update the firstName when given a string', ()=>{
-              
-            return chai.request(app)
-            .post('/api/users/changeAccountDetails')
-            .send({
-                username,
-                password,
-                firstName: "Samus",
-                lastName
-            })
-            .then(res => {
-                console.log('b ok');
-                //TODO: figure out why this isn't throwing an error if I make the number something else
 
-                console.log(res.body);
-                expect(res.body.code).to.equal(201);
-                expect(res.body.user.firstName).to.equal('Samus');
-                
 
-            })
-            .catch(err => console.error(err));  
-            })
-
-            it('will succeed when you pass a string for the lastName', ()=>{
-                return chai.request(app)
-                .post('/api/users/changeAccountDetails')
-                .send({
-                    username,
-                    password,
-                    firstName,
-                    lastName: "Aran"
-                })
-                .then(res => {
-                    console.log('c ok');
-                    //TODO: figure out why this isn't throwing an error if I make the number something else
-    
-                    console.log(res.body);
-                    expect(res.body.code).to.equal(201);
-                    expect(res.body.user.lastName).to.equal('Aran');
-                    
-                    
-                })
-                .catch(err => console.error(err));  
-            });
-
-            it('will succeed when you enter a birthday as a string', ()=>{
-                let newBirthday = new Date;
-                newBirthday = newBirthday.toString();
-                return chai.request(app)
-                .post('/api/users/changeAccountDetails')
-                .send({
-                    username,
-                    password,
-                    firstName,
-                    lastName,
-                    birthday: newBirthday
-                })
-                .then(res => {
-                    console.log('c ok');
-                    //TODO: figure out why this isn't throwing an error if I make the number something else
-    
-                    console.log(res.body);
-                    expect(res.body.code).to.equal(201);
-                    // expect(res.body.user.birthday.toString()).to.equal(newBirthday);
-                    expect(res.body.user.birthday).to.not.equal(new Date);
-                    
-    
-                })
-                .catch(err => console.error(err)); 
-            })
-            
-        
-        
-        });
+        // describe('POST', ()=>{
+        //     it('should update the firstName when given a string', ()=>{
+        //
+        //     return chai.request(app)
+        //     .post('/api/users/changeAccountDetails')
+        //     .send({
+        //         username,
+        //         password,
+        //         firstName: "Samus",
+        //         lastName
+        //     })
+        //     .then(res => {
+        //         console.log('b ok');
+        //         //TODO: figure out why this isn't throwing an error if I make the number something else
+        //
+        //         console.log(res.body);
+        //         expect(res.body.code).to.equal(201);
+        //         expect(res.body.user.firstName).to.equal('Samus');
+        //
+        //
+        //     })
+        //     .catch(err => console.error(err));
+        //     })
+        //
+        //     it('will succeed when you pass a string for the lastName', ()=>{
+        //         return chai.request(app)
+        //         .post('/api/users/changeAccountDetails')
+        //         .send({
+        //             username,
+        //             password,
+        //             firstName,
+        //             lastName: "Aran"
+        //         })
+        //         .then(res => {
+        //             console.log('c ok');
+        //             //TODO: figure out why this isn't throwing an error if I make the number something else
+        //
+        //             console.log(res.body);
+        //             expect(res.body.code).to.equal(201);
+        //             expect(res.body.user.lastName).to.equal('Aran');
+        //
+        //
+        //         })
+        //         .catch(err => console.error(err));
+        //     });
+        //
+        //     it('will succeed when you enter a birthday as a string', ()=>{
+        //         let newBirthday = new Date;
+        //         newBirthday = newBirthday.toString();
+        //         return chai.request(app)
+        //         .post('/api/users/changeAccountDetails')
+        //         .send({
+        //             username,
+        //             password,
+        //             firstName,
+        //             lastName,
+        //             birthday: newBirthday
+        //         })
+        //         .then(res => {
+        //             console.log('c ok');
+        //             //TODO: figure out why this isn't throwing an error if I make the number something else
+        //
+        //             console.log(res.body);
+        //             expect(res.body.code).to.equal(201);
+        //             // expect(res.body.user.birthday.toString()).to.equal(newBirthday);
+        //             expect(res.body.user.birthday).to.not.equal(new Date);
+        //
+        //
+        //         })
+        //         .catch(err => console.error(err));
+        //     })
+        //
+        //
+        //
+        // });
     })
 
     /////////////////////////////
 
     describe('api/users/changePassword', function() {
-       
-        
-       
+
+
+
         describe('POST', ()=>{
             beforeEach(()=>{
                 return chai.request(app)
@@ -270,9 +270,9 @@ describe('/api/user', ()=> {
                     console.log('a ok');
                 })
                 .catch(err => console.error(err));
-    
+
             });
-    
+
             afterEach(()=> {
                 return User.deleteOne({})
             })
@@ -307,7 +307,7 @@ describe('/api/user', ()=> {
                     .catch(err => {
                         console.error(err)
                     })
-                
+
             })
 
             it('should not work if you supply the incorrect original password', () => {
@@ -331,17 +331,17 @@ describe('/api/user', ()=> {
                 })
             });
 
-           
 
-         
-        
+
+
+
         });
     });
 
     describe('/api/users/addCat', ()=> {
-       
+
         describe('POST', ()=> {
-            
+
                 beforeEach(()=>{
                     return chai.request(app)
                     .post('/api/users/signup')
@@ -358,14 +358,14 @@ describe('/api/user', ()=> {
                         console.log('a ok');
                         console.log('claypot');
                         console.log(res.body);
-        
+
                     })
                     .catch(err => console.error(err));
-        
+
                 });
-    
-            
-    
+
+
+
             afterEach(()=> {
                 return User.deleteOne({})
             })
@@ -400,7 +400,7 @@ describe('/api/user', ()=> {
 
     describe('api/users/removeCat', () => {
         describe('POST', ()=>{
-            let populatedCatArray = [{ 
+            let populatedCatArray = [{
                 _id: '5dabc6f3eca7d6750430ba64',
                 age: 'baby',
                 breed: 'American Shorthair',
@@ -412,7 +412,7 @@ describe('/api/user', ()=> {
                 name: 'Felix',
                 status: 'Available',
                 __v: 0 },
-                { 
+                {
                     _id: '5dabc6f3eca7d6750430cb56',
                     age: 'adult',
                     breed: 'American Shorthair',
@@ -424,7 +424,7 @@ describe('/api/user', ()=> {
                     name: 'Pepper',
                     status: 'Available',
                     __v: 0 }
-            
+
             ];
 
                 beforeEach(()=>{
@@ -443,14 +443,14 @@ describe('/api/user', ()=> {
                         console.log('a ok');
                         console.log('claypot');
                         console.log(res.body);
-        
+
                     })
                     .catch(err => console.error(err));
-        
+
                 });
-    
-            
-    
+
+
+
             afterEach(()=> {
                 return User.deleteOne({})
             });
