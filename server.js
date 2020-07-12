@@ -16,19 +16,16 @@ const { PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRY, PETFINDER_CLIENT_ID, PETFIND
 const app = express();
 app.use(express.json());
 app.use(cors());
-var corsOptions = {
-    origin: "https://fast-brushlands-35777.herokuapp.com",
-    optionsSuccessStatus: 200
-}
+
 app.use(express.static('public'));
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 app.use(morgan('common'));
 
 // app.use(multer({dest:'./uploads/'}).single('photo'));
-app.use('/api/auth', cors(corsOptions), authRouter);
-app.use('/api/users', cors(corsOptions), usersRouter);
-app.use('/api/cats', cors(corsOptions), catRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/cats', catRouter);
 const logErrors = (err, req, res, next) => {
     console.error(err);
     return res.status(500).json({Error: 'Something went awry'});
