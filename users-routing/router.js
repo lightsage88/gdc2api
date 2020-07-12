@@ -214,7 +214,12 @@ const zodiacFinder = (dateArray) => {
   }
 }
 
-router.post('/preserveNewCats', jsonParser, )
+router.post('/preserveNewCats', jsonParser, async (req,res) =>{
+
+
+
+
+})
 
 router.post('/signup', jsonParser, async (req,res)=>{
 
@@ -516,7 +521,7 @@ router.post('/deleteAccount', (req,res) => {
 
 /////////////////Adding/Removing Cats///////////////////////
 
-addCatMeat = username => {
+const addCatMeat = username => {
   console.log('addCatMeat running')
   return User.find({username})
     .then(_user => {
@@ -545,7 +550,10 @@ addCatMeat = username => {
         console.log(user);
         return res.status(201).json({message: "FROM BACKEND: Cat added to kennel!", cat: newCat});
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.log('houston we have a problem')
+      console.error(err)
+    });
 }
 
 router.post('/addCat', (req,res) => {
@@ -554,7 +562,7 @@ router.post('/addCat', (req,res) => {
     let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = req.body.cat;
     let username = req.body.username;
     let user;
-    this.addCatMeat(username)
+    addCatMeat(username)
     // return User.find({username})
     // .then(_user => {
     //     user = _user[0];
