@@ -35,7 +35,7 @@ const refreshPetFinderToken = () => {
 
     })
     .then(response =>{
-        console.log('////////////////////////////////////////////////////');
+        console.log('///////////////////////WILLY NILLY/////////////////////////////');
         // console.log(response);
         console.log(response.data);
         // process.env.PETFINDER_TOKEN = response.access_token;
