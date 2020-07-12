@@ -521,8 +521,10 @@ router.post('/deleteAccount', (req,res) => {
 
 /////////////////Adding/Removing Cats///////////////////////
 
-const addCatMeat = username => {
+const addCatMeat = (username, cat) => {
   console.log('addCatMeat running')
+  let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = cat;
+
   return User.find({username})
     .then(_user => {
         user = _user[0];
@@ -540,8 +542,6 @@ const addCatMeat = username => {
             size,
             status
         });
-
-
     })
     .then(newCat => {
         user.cats.push(newCat);
@@ -562,7 +562,7 @@ router.post('/addCat', (req,res) => {
     let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = req.body.cat;
     let username = req.body.username;
     let user;
-    addCatMeat(username)
+    addCatMeat(username, req.body.cat)
     // return User.find({username})
     // .then(_user => {
     //     user = _user[0];
