@@ -521,7 +521,7 @@ router.post('/deleteAccount', (req,res) => {
 
 /////////////////Adding/Removing Cats///////////////////////
 
-const addCatMeat = (username, cat) => {
+const addCatMeat = (username, cat, res) => {
   console.log('addCatMeat running')
   let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = cat;
 
@@ -556,41 +556,41 @@ const addCatMeat = (username, cat) => {
     });
 }
 
-router.post('/addCat', (req,res) => {
+router.post('/addCat', (req, res) => {
     console.log('addcat running');
     console.log(req.body.cat);
     let {age, breeds, coat, colors, description, gender, id, location, name, photos, size, status} = req.body.cat;
     let username = req.body.username;
     let user;
-    addCatMeat(username, req.body.cat)
-    // return User.find({username})
-    // .then(_user => {
-    //     user = _user[0];
-    //     return Cat.create({
-    //         age,
-    //         breeds,
-    //         coat,
-    //         colors,
-    //         description,
-    //         gender,
-    //         id,
-    //         location,
-    //         name,
-    //         photos,
-    //         size,
-    //         status
-    //     });
+    // addCatMeat(username, req.body.cat, res)
+    return User.find({username})
+    .then(_user => {
+        user = _user[0];
+        return Cat.create({
+            age,
+            breeds,
+            coat,
+            colors,
+            description,
+            gender,
+            id,
+            location,
+            name,
+            photos,
+            size,
+            status
+        });
 
 
-    // })
-    // .then(newCat => {
-    //     user.cats.push(newCat);
-    //     user.save();
-    //     console.log('behold the user');
-    //     console.log(user);
-    //     return res.status(201).json({message: "Cat added to kennel!", cat: newCat});
-    // })
-    // .catch(err => console.error(err));
+    })
+    .then(newCat => {
+        user.cats.push(newCat);
+        user.save();
+        console.log('behold the user');
+        console.log(user);
+        return res.status(201).json({message: "Cat added to kennel!", cat: newCat});
+    })
+    .catch(err => console.error(err));
 
 });
 

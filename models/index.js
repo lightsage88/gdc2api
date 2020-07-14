@@ -1,14 +1,8 @@
 "use strict"
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-
-
 mongoose.Promise = global.Promise;
-
-
-
 const catSchema = mongoose.Schema({
-
     age: {
         type: String
     },
@@ -140,4 +134,4 @@ userSchema.virtual("mostRecentCharacter").get(function(){
 
 const User = mongoose.model("User", userSchema);
 const Cat = mongoose.model("Cat", catSchema);
-module.exports = { User, Cat};
+module.exports = {User, Cat};
