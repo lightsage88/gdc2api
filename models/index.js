@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const catSchema = mongoose.Schema({
+    catID: {
+        type: Number
+    },
     age: {
         type: String
     },
@@ -21,10 +24,6 @@ const catSchema = mongoose.Schema({
     gender: {
         type: String
     },
-    id: {
-        type: Number
-    },
-
     location: {
         type: String
     },

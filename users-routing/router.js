@@ -573,7 +573,6 @@ router.post('/addCat', (req, res) => {
             colors,
             description,
             gender,
-            id,
             location,
             name,
             photos,
@@ -597,13 +596,16 @@ router.post('/addCat', (req, res) => {
 router.post('/removeCat', (req,res) => {
     let user;
     let {catID, username} = req.body;
+    console.log('remove cat running and here are the catID and username', catID, username)
     return User.find({username})
     .then(_user => {
         user = _user[0]
         return user;
     })
     .then(user => {
+        console.log(user.cats)
         let newCatArray = user.cats.filter(object=>{
+           console.log('cat we are investigatin rn', object)
            return object.id !== catID
         })
         console.log('pizzatime');
