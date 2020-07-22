@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(function(req, res, next){
-	res.header('Access-Control-Allow-Origin', 'https://fast-brushlands-35777.herokuapp.com');
+	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
 	if (req.method === 'OPTIONS') {
