@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const passport = require('passport');
 const morgan = require('morgan');
-// const cors = require('cors');
+const cors = require('cors');
 const {router: usersRouter} = require('./users-routing');
 const {router: catRouter} = require('./cats-routing');
 const {router: authRouter, localStrategy, jwtStrategy} = require('./auth-routing');
@@ -15,7 +15,7 @@ mongoose.set('useUnifiedTopology', true);
 const { PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRY, PETFINDER_CLIENT_ID, PETFINDER_CLIENT_SECRET} = require('./config');
 const app = express();
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 app.use(function(req, res, next){
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
