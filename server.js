@@ -16,6 +16,7 @@ const { PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRY, PETFINDER_CLIENT_ID, PETFIND
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.options('*', cors())
 // app.use(function(req, res, next){
 // 	res.header('Access-Control-Allow-Origin', '*');
 // 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
