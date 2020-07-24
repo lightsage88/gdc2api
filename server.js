@@ -35,6 +35,10 @@ app.use('/api/cats', catRouter);
 // catRouter.all('*', cors())
 // authRouter.all('*', cors())
 
+app.get('/', (req, res) => {
+    res.json('GLOSOCHO')
+})
+
 const logErrors = (err, req, res, next) => {
     console.error(err);
     return res.status(500).json({Error: 'Something went awry'});
