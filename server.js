@@ -31,6 +31,9 @@ app.use('/api/cats', catRouter);
 app.options('/api/auth', cors())
 app.options('/api/users', cors())
 app.options('/api/cats', cors())
+usersRouter.all('*', cors())
+catRouter.all('*', cors())
+authRouter.all('*', cors())
 
 const logErrors = (err, req, res, next) => {
     console.error(err);
