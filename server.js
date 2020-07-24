@@ -5,9 +5,6 @@ const express = require('express');
 const passport = require('passport');
 const morgan = require('morgan');
 const cors = require('cors');
-const {router: usersRouter} = require('./users-routing');
-const {router: catRouter} = require('./cats-routing');
-const {router: authRouter, localStrategy, jwtStrategy} = require('./auth-routing');
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
@@ -16,6 +13,9 @@ let app = express();
 app.use(express.json());
 app.use(cors());
 app.options('*', cors())
+const {router: usersRouter} = require('./users-routing');
+const {router: catRouter} = require('./cats-routing');
+const {router: authRouter, localStrategy, jwtStrategy} = require('./auth-routing');
 
 
 
