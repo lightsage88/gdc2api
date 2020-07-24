@@ -1,5 +1,5 @@
 exports.PORT = process.env.PORT || 8000;
-exports.DATABASE_URL = process.env.DATABASE_URL ||"mongodb://localhost/local-gdc2api"  || "mongodb+srv://lightsage88:Walruses8@my-first-atlas-db-obkbt.mongodb.net/gdc2?retryWrites=true&w=majority";
+exports.DATABASE_URL = process.env.DATABASE_URL ||"mongodb://localhost/local-gdc2api"
 exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || "mongodb://localhost/test-gdc2api";
 exports.PETFINDER_TOKEN = process.env.PETFINDER_TOKEN || '';
 exports.PETFINDER_CLIENT_SECRET = process.env.PETFINDER_CLIENT_SECRET || '';
