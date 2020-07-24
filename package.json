@@ -4,7 +4,8 @@
   "description": "the api for Grab Dat Cat 2.0",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 5000 --exit"
+    "test": "mocha --timeout 5000 --exit",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
