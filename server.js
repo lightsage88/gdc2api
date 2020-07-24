@@ -15,6 +15,8 @@ mongoose.set('useUnifiedTopology', true);
 const { PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRY, PETFINDER_CLIENT_ID, PETFINDER_CLIENT_SECRET} = require('./config');
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.options('*', cors())
 
 
 
@@ -22,8 +24,7 @@ app.use(express.static('public'));
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 app.use(morgan('common'));
-app.use(cors());
-app.options('*', cors())
+
 // app.use(multer({dest:'./uploads/'}).single('photo'));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
@@ -38,6 +39,48 @@ const logErrors = (err, req, res, next) => {
 
 
 app.use(logErrors);
+
+// let token;
+
+// const generatePetFinderToken = () => {
+//     //we need to run
+//             // xios({
+//             //     url: `${mAPI}/characters?nameStartsWith=${query}`,
+//             //     method: "GET",
+//             //     params:{
+//             //         "apikey": `${mPublicKey}`,
+//             //         "ts": `${timeStamp}`,
+//             //         "hash": `${hash}`
+//             //     },
+//             //     headers: {
+//             //         "accept": "application/json",
+//             //     }
+//     //$ curl -d "grant_type=client_credentials&client_id=XgCPNJwDy9c4aedC6NO3bR3f7FaZJyjxkWFc7dp4Mcl4wwj2Rs&client_secret=sITbiLaXhFikNjnjW8QNJAgBWjMp6C09OksmLDqj" https://api.petfinder.com/v2/oauth2/token
+//     return axios({
+//         url: 'https://api.petfinder.com/v2/oauth2/token',
+//         method: 'POST',
+//         data: {
+//             "grant_type":"client_credentials",
+//             "client_id": PETFINDER_CLIENT_ID,
+//             "client_secret": PETFINDER_CLIENT_SECRET
+//         },
+//         headers: {
+//             "accept": "application/json"
+//         }
+
+
+//     })
+//     .then( (response) =>{
+//         console.log('////////////////////////////////////////////////////');
+//         console.log(response);
+//         // process.env.PETFINDER_TOKEN = response.access_token;
+//         token =  response.access_token
+        
+//     })
+//     .catch(err => {
+//         console.error(err);
+//     });
+// }
 
 let server;
 
