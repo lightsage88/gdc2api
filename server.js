@@ -15,14 +15,15 @@ mongoose.set('useUnifiedTopology', true);
 const { PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRY, PETFINDER_CLIENT_ID, PETFINDER_CLIENT_SECRET} = require('./config');
 const app = express();
 app.use(express.json());
-app.use(cors());
+
 
 
 app.use(express.static('public'));
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 app.use(morgan('common'));
-
+app.use(cors());
+app.options('*', cors())
 // app.use(multer({dest:'./uploads/'}).single('photo'));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
