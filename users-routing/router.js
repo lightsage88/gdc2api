@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -11,6 +12,8 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 
 router.use(express.json());
+router.use(cors())
+router.options('*', cors())
 
 
 ///Account Creation, Editing, and Deletion//////////////////////

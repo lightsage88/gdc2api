@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -56,7 +57,8 @@ setInterval(()=>{
 }, 39000);
 
 router.use(express.json());
-
+router.use(cors())
+router.options('*', cors())
 //gender x (male, female) [multiple values can be set like so ==> gender=male,female]
         //gender can be set with radio buttons
 //breed x (many to choose from) [multiple values can be set like so ===> breed=american shorthair, abyssinian]

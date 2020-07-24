@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors')
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -16,7 +17,8 @@ const createAuthToken = function(user) {
 
 const localAuth = passport.authenticate('local', {session: false});
 router.use(bodyParser.json());
-
+router.use(cors())
+router.options('*', cors())
 //Human provides a username and password to log in
 router.post('/login', localAuth, (req,res)=> {
     console.log(req.user.username);
