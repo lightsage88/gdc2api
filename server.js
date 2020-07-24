@@ -28,6 +28,10 @@ app.use(morgan('common'));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/cats', catRouter);
+app.options('/api/auth', cors())
+app.options('/api/users', cors())
+app.options('/api/cats', cors())
+
 const logErrors = (err, req, res, next) => {
     console.error(err);
     return res.status(500).json({Error: 'Something went awry'});
