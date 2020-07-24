@@ -1,6 +1,5 @@
 'use strict'
 require('dotenv').config();
-const axios = require('axios');
 const mongoose = require('mongoose');
 const express = require('express');
 const passport = require('passport');
